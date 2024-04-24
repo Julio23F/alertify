@@ -1,6 +1,8 @@
 import 'package:alertify/data/data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -125,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "12",
+                                "7",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 22,
@@ -133,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               Text(
-                                "changements",
+                                "opportunité",
                                 style: TextStyle(
                                     color: Colors.white.withOpacity(0.7),
                                     fontSize: 14
@@ -148,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "12",
+                                "5",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 22,
@@ -156,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               Text(
-                                "changements",
+                                "autres",
                                 style: TextStyle(
                                     color: Colors.white.withOpacity(0.7),
                                     fontSize: 14
@@ -174,7 +176,7 @@ class _HomePageState extends State<HomePage> {
               //Filtre
               Container(
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-                margin: EdgeInsets.only(bottom: 25),
+                margin: EdgeInsets.only(bottom: 7),
                 color: Colors.white,
                 child: Row(
                   children: [
@@ -188,7 +190,84 @@ class _HomePageState extends State<HomePage> {
                     )
                   ],
                 ),
-              )
+              ),
+
+              //Liste des données
+              Expanded(
+                child: Consumer<Data>(
+                    builder: (context, value, child) {
+                      final List dataList = value.dataList;
+                      return ListView.builder (
+                          itemCount: dataList.length,
+                          itemBuilder: (context, index) {
+                            final data = dataList[index];
+                            return Container(
+                              color: Colors.white,
+                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                              margin: EdgeInsets.only(top: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                                data['title'],
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700
+                                                ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(left: 7),
+                                              padding: EdgeInsets.symmetric(vertical: 1, horizontal: 5),
+                                              decoration: BoxDecoration(
+                                                  color: data['state'] ? Colors.green.withOpacity(0.1) : Colors.red.withOpacity(0.1),
+                                                  borderRadius: BorderRadius.circular(15)
+                                              ),
+                                              child: Text(
+                                                  data['state'].toString(),
+                                                  style: TextStyle(
+                                                    fontSize: 10,
+                                                    color: data['state'] ? Colors.green : Colors.red,
+                                    
+                                                  ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        Text(
+                                          data['subTitle'],
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 12
+                                          ),
+                                        ),
+                                        SizedBox(height: 10,),
+                                        Text(
+                                          data['info'],
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 12
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(width: 25,),
+                                  Icon(Icons.more_horiz_outlined)
+                                ],
+                              )
+                            );
+                          }
+                      );
+                    }
+                ),
+              ),
+
+
             ],
           ),
         ),
